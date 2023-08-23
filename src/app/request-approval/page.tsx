@@ -26,7 +26,8 @@ export default function RequestApproval() {
     setUploadProgressPercentage(0);
     setIsUploading(true);
 
-    const fileName = Date.now().toString() + '_' + file.name;
+    const fileName =
+      Date.now().toString() + '_' + file.name.replaceAll(' ', '_');
     const totalChunks = Math.ceil(file.size / CHUNK_SIZE_IN_MB);
 
     const res = await fetch(`/api/initiateUpload`, {
