@@ -1,0 +1,3 @@
+1. Admin comes and creates his workspace
+2. Admin adds some people via email to his workspace
+3. 
