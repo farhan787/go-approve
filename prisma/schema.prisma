@@ -1,0 +1,100 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int               @id @default(autoincrement())
+  email           String            @unique
+  password        String?
+  Admin           WorkspaceAdmin[]
+  WorkspaceEditor WorkspaceEditor[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Workspace {
+  id              Int               @id @default(autoincrement())
+  name            String            @unique
+  admin           WorkspaceAdmin?
+  WorkspaceEditor WorkspaceEditor[]
+  File            File[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WorkspaceAdmin {
+  id    Int    @id @default(autoincrement())
+  email String
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId Int       @unique
+
+  user             User              @relation(fields: [userId], references: [id])
+  userId           Int
+  AdminCredentials AdminCredential[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WorkspaceEditor {
+  id    Int    @id @default(autoincrement())
+  email String
+
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId Int
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  File File[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([workspaceId, userId], name: "workspaceEditorIdentifier")
+}
+
+model AdminCredential {
+  id          Int            @id @default(autoincrement())
+  admin       WorkspaceAdmin @relation(fields: [adminId], references: [id])
+  adminId     Int
+  platform    Int
+  credentials Json
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([adminId, platform], name: "adminCredentialsIdentifer")
+}
+
+model File {
+  id          Int       @id @default(autoincrement())
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId Int
+
+  workspaceEditor WorkspaceEditor @relation(fields: [editorId], references: [id])
+  editorId        Int
+
+  title       String
+  description String?
+  s3Title     String
+  approved    Boolean @default(false)
+  fileType    String?
+  fileFormat  String?
+  fileSize    String?
+  isDeleted   Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

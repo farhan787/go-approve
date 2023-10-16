@@ -1,0 +1,50 @@
+{
+  "Workspace": {
+    "INDEXING": "name",
+    "id": 1,
+    "name": "unique for each workspace",
+    "admin": {
+      "email": "adminEmail",
+      "referneceToUserTable": "Object(user)"
+    },
+    "editors": [
+      {
+        "referneceToUserTable": "Object(user)",
+        "email": "adminEmail"
+      }
+    ],
+    "hasMoreEditors": "false (to add limit)",
+    "createdAt": "",
+    "updatedAt": ""
+  },
+  "Users": {
+    "INDEXING": "email",
+    "email": "",
+    "password": "",
+    "role": "admin/editor format Enum 0/1",
+    "name": "",
+    "phone": ""
+  },
+  "AdminCreds": {
+    "email": "adminEmail",
+    "referneceToUserTable": "Object(user)",
+    "platform": "youtube",
+    "creds": {
+      "google-auth-id": "",
+      "google-auth-secret-key": ""
+    }
+  },
+  "Files": {
+    "INDEXING": "workspaceId and userId",
+    "workspaceId": "Object(id)",
+    "editorUserId": "",
+    "title": "",
+    "description": "",
+    "s3_title": "",
+    "approved": false,
+    "fileType": "video",
+    "fileFormat": "mp4",
+    "fileSize": "",
+    "isDeleted": false
+  }
+}
